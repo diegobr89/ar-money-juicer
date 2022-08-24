@@ -178,13 +178,13 @@
 			function calculate() {
 				const realPrice = new RealPrice();
 
-				realPrice.estimatedAnualInflation = document.getElementById('estimatedAnualInflation').value; //Inflacion anual estimada
-				realPrice.actualDollarPrice = document.getElementById('actualDollarPrice').value; //Precio del dolar blue al dia de la fecha
-				realPrice.productPrice = document.getElementById('productPrice').value; //Precio final del producto en cuotas
-				realPrice.quotaQty = document.getElementById('quotaQty').value; //Cantidad de cuotas
-				realPrice.minimalPrice = document.getElementById('minimalPrice').value; // Precio que se puede conseguir el producto en contado efectivo
+				realPrice.estimatedAnualInflation = document.getElementById('estimatedAnualInflation').value; 	//Inflacion anual estimada
+				realPrice.actualDollarPrice = document.getElementById('actualDollarPrice').value; 				//Precio del dolar blue al dia de la fecha
+				realPrice.productPrice = document.getElementById('productPrice').value; 						//Precio final del producto en cuotas
+				realPrice.quotaQty = document.getElementById('quotaQty').value; 								//Cantidad de cuotas
+				realPrice.minimalPrice = document.getElementById('minimalPrice').value; 						// Precio que se puede conseguir el producto en contado efectivo
 
-				const { costInArs, costInUsd, effectiveRate } = realPrice.calculate(true); // si se pasa false se estima que el precio del dolar no se mueve
+				const { costInArs, costInUsd, effectiveRate } = realPrice.calculate(true); 						// si se pasa false se estima que el precio del dolar no se mueve
 
 				const methodSuggest = realPrice.minimalPrice > costInArs ? 'Cuotas' : 'Efectivo';
 
