@@ -26,8 +26,7 @@
 
       <main>
         <div class="py-5 text-center">
-          <img class="d-block mx-auto mb-4" src="./assets/ar-money-juicer.png">
-          <h2>Inflation fucker</h2>
+          <img class="img-fluid" style="width:500px;" src="./assets/ar-money-juicer.png">
           <p class="lead">Calculadora rapida de costo de oprtunidad en relacion a una compra en cuotas vs compra en contado efectivo</p>
         </div>
         <div class="row g-5">
@@ -36,12 +35,16 @@
             <form id="calculateForm" onchange="toggleButton(this)" class="needs-validation">
               <div class="row g-3">
                 <div class="col-sm-6"><label for="estimatedAnualInflation" class="form-label">Inflacion anual estimada</label>
-                  <div class="input-group"><span class="input-group-text">%</span><input type="number" class="form-control" id="estimatedAnualInflation" placeholder="90" value="" required="">
+                  <div class="input-group">
+                    <span class="input-group-text">%</span>
+                    <input type="number" class="form-control" id="estimatedAnualInflation" placeholder="" value="90" required="">
                     <div class="invalid-feedback"> Es un campo requerido </div>
                   </div>
                 </div>
                 <div class="col-sm-6"><label for="actualDollarPrice" class="form-label">Cotizacion del dolar</label>
-                  <div class="input-group"><span class="input-group-text">$ARS</span><input type="number" class="form-control" id="actualDollarPrice" placeholder="295" value="" required=""></div>
+                  <div class="input-group">
+                    <span class="input-group-text">$ARS</span>
+                    <input type="number" class="form-control" id="actualDollarPrice" placeholder="" value="295" required=""></div>
                 </div>
                 <div class="col-12"><label for="productPrice" class="form-label">Precio del producto en cuotas</label><input type="number" class="form-control" id="productPrice" placeholder="" required=""></div>
                 <div class="col-12"><label for="quotaQty" class="form-label">Cantidad de cuotas</label><input type="number" class="form-control" id="quotaQty" placeholder="" required=""></div>
