@@ -1,208 +1,133 @@
 <!doctype html>
 <html lang="en">
   <head>
+    
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Inflation fucker</title>
+    <title>AR Money Juicer</title>
+
+    <link rel="icon" type="image/x-icon" href="/assets/favicon.png">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/4.4.0/mdb.min.css" rel="stylesheet" />
+    
+    <style>
+      .btn-info-popover {
+        padding: 0;
+        margin-left: 0.2rem;
+        font-size: 0.8rem;
+      }
+    </style>
 
-		<link
-			href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
-			rel="stylesheet"
-		/>
-		<link
-			href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
-			rel="stylesheet"
-		/>
-		<link
-			href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/4.4.0/mdb.min.css"
-			rel="stylesheet"
-		/>
+  </head>
+  <body class="bg-light">
+    <div class="container">
 
-		<style>
-			.btn-info-popover {
-				padding: 0;
-				margin-left: 0.2rem;
-				font-size: 0.8rem;
-			}
-		</style>
+      <main>
+        <div class="py-5 text-center">
+          <img class="d-block mx-auto mb-4" src="./assets/ar-money-juicer.png">
+          <h2>Inflation fucker</h2>
+          <p class="lead">Calculadora rapida de costo de oprtunidad en relacion a una compra en cuotas vs compra en contado efectivo</p>
+        </div>
+        <div class="row g-5">
+          <div class="col-md-7 col-lg-8">
+            <h4 class="mb-3">Datos necesarios</h4>
+            <form id="calculateForm" onchange="toggleButton(this)" class="needs-validation">
+              <div class="row g-3">
+                <div class="col-sm-6"><label for="estimatedAnualInflation" class="form-label">Inflacion anual estimada</label>
+                  <div class="input-group"><span class="input-group-text">%</span><input type="number" class="form-control" id="estimatedAnualInflation" placeholder="90" value="" required="">
+                    <div class="invalid-feedback"> Es un campo requerido </div>
+                  </div>
+                </div>
+                <div class="col-sm-6"><label for="actualDollarPrice" class="form-label">Cotizacion del dolar</label>
+                  <div class="input-group"><span class="input-group-text">$ARS</span><input type="number" class="form-control" id="actualDollarPrice" placeholder="295" value="" required=""></div>
+                </div>
+                <div class="col-12"><label for="productPrice" class="form-label">Precio del producto en cuotas</label><input type="number" class="form-control" id="productPrice" placeholder="" required=""></div>
+                <div class="col-12"><label for="quotaQty" class="form-label">Cantidad de cuotas</label><input type="number" class="form-control" id="quotaQty" placeholder="" required=""></div>
+                <div class="col-12"><label for="minimalPrice" class="form-label">Precio mas bajo pagando en efectivo</label><input type="number" class="form-control" id="minimalPrice" placeholder="" required=""></div>
+              </div>
+              <hr class="my-4"><button class="w-100 btn btn-primary btn-lg" type="button" disabled="true" onclick="onSubmit()">Calcular</button>
+            </form>
+          </div>
 
-	</head>
-	<body class="bg-light">
+          <div class="col-md-5 col-lg-4 order-md-last">
+            <h4 class="d-flex justify-content-between align-items-center mb-3"><span class="text-primary">Resultados</span><span class="badge bg-primary rounded-pill">3</span></h4>
+            <ul class="list-group mb-3">
+              <li class="list-group-item d-flex justify-content-between lh-sm">
+                <div>
+                  <h6 class="my-0"> Costo efectivo en pesos <button type="button" class="btn btn-link btn-sm btn-info-popover" data-bs-toggle="popover" data-bs-trigger="focus" data-bs-title="Costo efectivo en pesos" data-bs-content='Es el valor que deberia tener el "producto en cuotas" si se hiciera en un pago (Se calcula la proyeccion de monto inflacionario dentro del precio final y se lo resta)'><i class="fa-solid fa-circle-info"></i></button></h6><small class="text-muted">Costo real del producto en cuotas</small>
+                </div><span id="costInArs" class="text-muted">$0</span>
+              </li>
+              <li class="list-group-item d-flex justify-content-between lh-sm">
+                <div>
+                  <h6 class="my-0"> Costo efectivo en dolares <button type="button" class="btn btn-link btn-sm btn-info-popover" data-bs-toggle="popover" data-bs-trigger="focus" data-bs-title="Costo efectivo en dolares" data-bs-content='Idem al costo efectivo en pesos, pero expresado en dolares utilizando la cotizacion ingresada en el formulario'><i class="fa-solid fa-circle-info"></i></button></h6><small class="text-muted">Costo real del producto en cuotas expresado en USD</small>
+                </div><span id="costInUsd" class="text-muted">US$0</span>
+              </li>
+              <li class="list-group-item d-flex justify-content-between lh-sm">
+                <div>
+                  <h6 class="my-0"> Tasa efectiva en ctas <button type="button" class="btn btn-link btn-sm btn-info-popover" data-bs-toggle="popover" data-bs-trigger="focus" data-bs-title="Tasa efectiva en ctas" data-bs-content='Es la tasa de interés real (sin costo inflacionario) que se imprime en el monto final del "producto en cuotas". Si es un valor mayor a 0 indica que el producto tiene un interés extra además del inflacionario. Si el valor tiende a 0 indica que es "sin interes". Si el valor es negativo indica que la tasa de interes en cuotas es inferior a la inflacion'><i class="fa-solid fa-circle-info"></i></button></h6><small class="text-muted">Tasa de interes real en cuotas</small>
+                </div><span id="effectiveRate" class="text-muted">%0</span>
+              </li>
+              <li class="list-group-item d-flex justify-content-between bg-light">
+                <div class="text-success">
+                  <h6 class="my-0">Metodo de pago sugerido</h6><strong id="methodSuggest">-</strong>
+                </div><span class="text-success"></span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </main>
 
-		<div class="container">
-			<main>
-				<div class="py-5 text-center">
-					<img class="d-block mx-auto mb-4" width="300" height="110" src="https://cdn.europosters.eu/image/1300/posters/scarface-dollar-i8084.jpg" >
-					<h2>Inflation fucker</h2>
-					<p class="lead">Calculadora rapida de costo de oprtunidad en relacion a una compra en cuotas vs compra en contado efectivo</p>
-				</div>
+      <footer class="my-5 pt-5 text-muted text-center text-small">
+        <p class="mb-1">2022 - Argentina</p>
+      </footer>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous"></script>
+    <script src="./price-calc-core.js"></script>
+    
+    <script>
+      const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]')
+      const popoverList = [...popoverTriggerList].map(popoverTriggerEl => new bootstrap.Popover(popoverTriggerEl))
+    </script>
 
-				<div class="row g-5">
-					<div class="col-md-7 col-lg-8">
-						<h4 class="mb-3">Datos necesarios</h4>
+    <script>
+      function onSubmit() {
+        const form = document.getElementById('calculateForm');
+        if (!form.checkValidity()) return;
+        calculate();
+      }
 
-						<form id="calculateForm" onchange="toggleButton(this)" class="needs-validation">
-							<div class="row g-3">
-								<div class="col-sm-6">
-									<label for="estimatedAnualInflation" class="form-label">Inflacion anual estimada</label>
-									<div class="input-group">
-										<span class="input-group-text">%</span>
-										<input type="number" class="form-control" id="estimatedAnualInflation" placeholder="90" value="" required="">
-										<div class="invalid-feedback">
-											Es un campo requerido
-										</div>
-									</div>
-								</div>
+      function calculate() {
+        const realPrice = new RealPrice();
+        realPrice.estimatedAnualInflation = document.getElementById('estimatedAnualInflation').value; //Inflacion anual estimada
+        realPrice.actualDollarPrice = document.getElementById('actualDollarPrice').value; //Precio del dolar blue al dia de la fecha
+        realPrice.productPrice = document.getElementById('productPrice').value; //Precio final del producto en cuotas
+        realPrice.quotaQty = document.getElementById('quotaQty').value; //Cantidad de cuotas
+        realPrice.minimalPrice = document.getElementById('minimalPrice').value; // Precio que se puede conseguir el producto en contado efectivo
+        
+        const {
+          costInArs,
+          costInUsd,
+          effectiveRate
+        } = realPrice.calculate(true); // si se pasa false se estima que el precio del dolar no se mueve
+        
+        const methodSuggest = realPrice.minimalPrice > costInArs ? 'Cuotas' : 'Efectivo';
+        
+        document.getElementById('costInArs').innerHTML = "$" + costInArs.toFixed(2);
+        document.getElementById('costInUsd').innerHTML = "US$" + costInUsd.toFixed(2);
+        document.getElementById('effectiveRate').innerHTML = "%" + effectiveRate.toFixed(2);
+        document.getElementById('methodSuggest').innerHTML = methodSuggest;
+      }
 
-								<div class="col-sm-6">
-									<label for="actualDollarPrice" class="form-label">Cotizacion del dolar</label>
-									<div class="input-group">
-										<span class="input-group-text">$ARS</span>
-										<input type="number" class="form-control" id="actualDollarPrice" placeholder="295" value="" required="">
-									</div>
-								</div>
-
-								<div class="col-12">
-									<label for="productPrice" class="form-label">Precio del producto en cuotas</label>
-									<input type="number" class="form-control" id="productPrice" placeholder="" required="">
-								</div>
-
-								<div class="col-12">
-									<label for="quotaQty" class="form-label">Cantidad de cuotas</label>
-									<input type="number" class="form-control" id="quotaQty" placeholder="" required="">
-								</div>
-
-								<div class="col-12">
-									<label for="minimalPrice" class="form-label">Precio mas bajo pagando en efectivo</label>
-									<input type="number" class="form-control" id="minimalPrice" placeholder="" required="">
-								</div>
-
-							</div>
-
-							<hr class="my-4">
-
-							<button class="w-100 btn btn-primary btn-lg" type="button" disabled="true" onclick="onSubmit()">Calcular</button>
-
-						</form>
-					</div>
-
-					<div class="col-md-5 col-lg-4 order-md-last">
-						<h4 class="d-flex justify-content-between align-items-center mb-3">
-							<span class="text-primary">Resultados</span>
-							<span class="badge bg-primary rounded-pill">3</span>
-						</h4>
-						<ul class="list-group mb-3">
-							<li class="list-group-item d-flex justify-content-between lh-sm">
-								<div>
-									<h6 class="my-0">
-										Costo efectivo en pesos
-										<button type="button" class="btn btn-link btn-sm btn-info-popover"
-										data-bs-toggle="popover"
-										data-bs-trigger="focus"
-										data-bs-title="Costo efectivo en pesos"
-										data-bs-content='Es el valor que deberia tener el "producto en cuotas" si se hiciera en un pago (Se calcula la proyeccion de monto inflacionario dentro del precio final y se lo resta)'
-										><i class="fa-solid fa-circle-info"></i></button>
-									</h6>
-									<small class="text-muted">Costo real del producto en cuotas</small>
-								</div>
-								<span id="costInArs" class="text-muted">$0</span>
-							</li>
-							<li class="list-group-item d-flex justify-content-between lh-sm">
-								<div>
-									<h6 class="my-0">
-										Costo efectivo en dolares
-										<button type="button" class="btn btn-link btn-sm btn-info-popover"
-										data-bs-toggle="popover"
-										data-bs-trigger="focus"
-										data-bs-title="Costo efectivo en dolares"
-										data-bs-content='Idem al costo efectivo en pesos, pero expresado en dolares utilizando la cotizacion ingresada en el formulario'
-										><i class="fa-solid fa-circle-info"></i></button>
-									</h6>
-									<small class="text-muted">Costo real del producto en cuotas expresado en USD</small>
-								</div>
-								<span id="costInUsd" class="text-muted">US$0</span>
-							</li>
-							<li class="list-group-item d-flex justify-content-between lh-sm">
-								<div>
-									<h6 class="my-0">
-										Tasa efectiva en ctas
-										<button type="button" class="btn btn-link btn-sm btn-info-popover"
-										data-bs-toggle="popover"
-										data-bs-trigger="focus"
-										data-bs-title="Tasa efectiva en ctas"
-										data-bs-content='Es la tasa de interés real (sin costo inflacionario) que se imprime en el monto final del "producto en cuotas". Si es un valor mayor a 0 indica que el producto tiene un interés extra además del inflacionario. Si el valor tiende a 0 indica que es "sin interes". Si el valor es negativo indica que la tasa de interes en cuotas es inferior a la inflacion'
-										><i class="fa-solid fa-circle-info"></i></button>
-									</h6>
-									<small class="text-muted">Tasa de interes real en cuotas</small>
-								</div>
-								<span id="effectiveRate" class="text-muted">%0</span>
-							</li>
-							<li class="list-group-item d-flex justify-content-between bg-light">
-								<div class="text-success">
-									<h6 class="my-0">Metodo de pago sugerido</h6>
-									<strong id="methodSuggest">-</strong>
-								</div>
-								<span class="text-success"></span>
-							</li>
-						</ul>
-					</div>
-
-				</div>
-			</main>
-
-			<footer class="my-5 pt-5 text-muted text-center text-small">
-				<p class="mb-1">2022 - Argentina</p>
-			</footer>
-		</div>
-
-		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous"></script>
-		<script src="./price-calc-core.js"></script>
-
-		<script>
-			const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]')
-			const popoverList = [...popoverTriggerList].map(popoverTriggerEl => new bootstrap.Popover(popoverTriggerEl))
-		</script>
-
-		<script>
-
-			function onSubmit() {
-				const form = document.getElementById('calculateForm');
-				if (!form.checkValidity())
-					return;
-
-				form.classList.add('was-validated')
-				calculate();
-			}
-
-			function calculate() {
-				const realPrice = new RealPrice();
-
-				realPrice.estimatedAnualInflation = document.getElementById('estimatedAnualInflation').value; 	//Inflacion anual estimada
-				realPrice.actualDollarPrice = document.getElementById('actualDollarPrice').value; 				//Precio del dolar blue al dia de la fecha
-				realPrice.productPrice = document.getElementById('productPrice').value; 						//Precio final del producto en cuotas
-				realPrice.quotaQty = document.getElementById('quotaQty').value; 								//Cantidad de cuotas
-				realPrice.minimalPrice = document.getElementById('minimalPrice').value; 						// Precio que se puede conseguir el producto en contado efectivo
-
-				const { costInArs, costInUsd, effectiveRate } = realPrice.calculate(true); 						// si se pasa false se estima que el precio del dolar no se mueve
-
-				const methodSuggest = realPrice.minimalPrice > costInArs ? 'Cuotas' : 'Efectivo';
-
-				document.getElementById('costInArs').innerHTML = "$" + costInArs.toFixed(2);
-				document.getElementById('costInUsd').innerHTML = "US$" + costInUsd.toFixed(2);
-				document.getElementById('effectiveRate').innerHTML = "%" + effectiveRate.toFixed(2);
-
-				document.getElementById('methodSuggest').innerHTML = methodSuggest;
-			}
-
-			function toggleButton(e) {
-				const elements = Array.from(e.elements);
-				const inputs = elements.filter(element => element.constructor.name !== 'HTMLButtonElement');
-				const [button] = elements.filter(element => element.constructor.name === 'HTMLButtonElement');
-				const enable = inputs.every(element => !!element.value);
-				button.disabled = !enable;
-			}
-
-		</script>
-	</body>
-	</html>
+      function toggleButton(e) {
+        const elements = Array.from(e.elements);
+        const inputs = elements.filter(element => element.constructor.name !== 'HTMLButtonElement');
+        const [button] = elements.filter(element => element.constructor.name === 'HTMLButtonElement');
+        const enable = inputs.every(element => !!element.value);
+        button.disabled = !enable;
+      }
+    </script>
+  </body>
+</html>
