@@ -47,11 +47,24 @@
                       <div class="col-sm-6"><label for="actualDollarPrice" class="form-label">Cotizacion del dolar</label>
                         <div class="input-group">
                           <span class="input-group-text">$ARS</span>
-                          <input type="number" class="form-control" id="actualDollarPrice" placeholder="" value="295" required=""></div>
+                          <input type="number" class="form-control" id="actualDollarPrice" placeholder="" value="295" required="">
+                        </div>
                       </div>
-                      <div class="col-12"><label for="productPrice" class="form-label">Precio del producto en cuotas</label><input type="number" class="form-control" id="productPrice" placeholder="" required=""></div>
+                      <div class="col-12">
+                        <label for="productPrice" class="form-label">Precio del producto en cuotas</label>
+                        <div class="input-group">
+                          <span class="input-group-text">$ARS</span>
+                          <input type="number" class="form-control" id="productPrice" placeholder="" required="">
+                        </div>
+                      </div>
                       <div class="col-12"><label for="quotaQty" class="form-label">Cantidad de cuotas</label><input type="number" class="form-control" id="quotaQty" placeholder="" required=""></div>
-                      <div class="col-12"><label for="minimalPrice" class="form-label">Precio mas bajo pagando en efectivo</label><input type="number" class="form-control" id="minimalPrice" placeholder="" required=""></div>
+                      <div class="col-12">
+                        <label for="minimalPrice" class="form-label">Precio mas bajo pagando en efectivo</label>
+                        <div class="input-group">
+                          <span class="input-group-text">$ARS</span>
+                          <input type="number" class="form-control" id="minimalPrice" placeholder="" required="">
+                        </div>
+                      </div>
                     </div>
                     <hr class="my-4"><button class="w-100 btn btn-primary btn-lg" type="button" disabled="true" onclick="onSubmit()">Calcular</button>
                   </form>
