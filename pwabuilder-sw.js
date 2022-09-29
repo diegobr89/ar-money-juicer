@@ -22,7 +22,7 @@ self.addEventListener('install', async (event) => {
   event.waitUntil(
     caches.open(CACHE)
       .then((cache) => {
-        CACHE_LIST.forEach(item => cache.add(offlineFallbackPage));
+        CACHE_LIST.forEach(item => cache.add(item));
       })
   );
 });
