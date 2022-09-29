@@ -4,12 +4,12 @@
     "description": "Calculadora rapida de costo de oprtunidad en relacion a una compra en cuotas vs compra en contado efectivo",
     "icons": [
       {
-        "src": "icons/majicon-32.png",
+        "src": "assets/majicon-32.png",
         "sizes": "32x32",
         "type": "image/png"
       },
       {
-        "src": "icons/majicon.png",
+        "src": "assets/majicon.png",
         "sizes": "512x512",
         "type": "image/png"
       }
