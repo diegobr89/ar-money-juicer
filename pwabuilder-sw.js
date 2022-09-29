@@ -47,7 +47,7 @@ self.addEventListener('fetch', (event) => {
 
         const cache = await caches.open(CACHE);
 
-        CACHE_LIST.forEach(item => {
+        CACHE_LIST.forEach(async item => {
           const match = await cache.match(offlineFallbackPage);
           if(!!match)
             return match;
