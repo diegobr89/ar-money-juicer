@@ -47,11 +47,12 @@ self.addEventListener('fetch', (event) => {
 
         const cache = await caches.open(CACHE);
 
-        CACHE_LIST.forEach(async item => {
-          const match = await cache.match(offlineFallbackPage);
+        for (const item of CACHE_LIST) {
+          const match = await cache.match(item);
+
           if(!!match)
             return match;
-        });
+        }
       }
     })());
   }
