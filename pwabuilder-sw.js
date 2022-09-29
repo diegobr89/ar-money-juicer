@@ -3,6 +3,11 @@
 importScripts('https://storage.googleapis.com/workbox-cdn/releases/5.1.2/workbox-sw.js');
 
 const CACHE = "pwabuilder-page";
+const CACHE_LIST = [
+  "index.html",
+  "/assets/ar-money-juicer.png",
+  "price-calc-core.js",
+]
 
 // TODO: replace the following with the correct offline fallback page i.e.: const offlineFallbackPage = "offline.html";
 const offlineFallbackPage = "index.html";
@@ -16,7 +21,9 @@ self.addEventListener("message", (event) => {
 self.addEventListener('install', async (event) => {
   event.waitUntil(
     caches.open(CACHE)
-      .then((cache) => cache.add(offlineFallbackPage))
+      .then((cache) => {
+        CACHE_LIST.forEach(item => cache.add(offlineFallbackPage));
+      })
   );
 });
 
@@ -39,8 +46,12 @@ self.addEventListener('fetch', (event) => {
       } catch (error) {
 
         const cache = await caches.open(CACHE);
-        const cachedResp = await cache.match(offlineFallbackPage);
-        return cachedResp;
+
+        CACHE_LIST.forEach(item => {
+          const match = await cache.match(offlineFallbackPage);
+          if(!!match)
+            return match;
+        });
       }
     })());
   }
