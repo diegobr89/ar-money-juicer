@@ -9,8 +9,7 @@ self.addEventListener('install', function(event) {
         '/css/bootstrap.min.css',
         '/css/all.min.css',
         '/css/mdb.min.css',
-        '/js/bootstrap.min.js',
-        '/js/mdb.min.js',
+        '/js/bootstrap.bundle.min.js',
         '/js/price-calc-core.js'
       ]);
     })
