@@ -227,41 +227,32 @@
     </script>
 
     <script>
-      function onSubmit() {
-        const form = document.getElementById('calculateForm');
-        if (!form.checkValidity()) return;
-        calculate();
+      function onSubmitChlArs() {
+        const form = document.getElementById('chlArsCalculateForm');
+        calculateChlArs();
       }
 
-      function calculate() {
-        const realPrice = new RealPrice();
-        realPrice.estimatedAnualInflation = document.getElementById('estimatedAnualInflation').value; //Inflacion anual estimada
-        realPrice.actualDollarPrice = document.getElementById('actualDollarPrice').value; //Precio del dolar blue al dia de la fecha
-        realPrice.productPrice = document.getElementById('productPrice').value; //Precio final del producto en cuotas
-        realPrice.quotaQty = document.getElementById('quotaQty').value; //Cantidad de cuotas
-        realPrice.minimalPrice = document.getElementById('minimalPrice').value; // Precio que se puede conseguir el producto en contado efectivo
+      function calculateChlArs() {
 
-        const {
-          costInArs,
-          costInUsd,
-          effectiveRate
-        } = realPrice.calculate(true); // si se pasa false se estima que el precio del dolar no se mueve
+        const chileDollar = document.getElementById('chileDollar').value;
+        const argentinaDollar = document.getElementById('argentinaDollar').value;
+        const arsElement = document.getElementById('arsValue');
+        const chlElement = document.getElementById('chlValue');
+        const arsValue = Number(arsElement.value);
+        const chlValue = Number(chlElement.value);
 
-        const methodSuggest = realPrice.minimalPrice > costInArs ? 'Cuotas' : 'Efectivo';
 
-        document.getElementById('costInArs').innerHTML = "$" + costInArs.toFixed(2);
-        document.getElementById('costInUsd').innerHTML = "US$" + costInUsd.toFixed(2);
-        document.getElementById('effectiveRate').innerHTML = "%" + effectiveRate.toFixed(2);
-        document.getElementById('methodSuggest').innerHTML = methodSuggest;
-      }
+        if(!!chlValue){
+          arsElement.value = ((chlValue / chileDollar) * argentinaDollar);
+          return;
+        }
 
-      function toggleButton(e) {
-        const elements = Array.from(e.elements);
-        const inputs = elements.filter(element => element.constructor.name !== 'HTMLButtonElement');
-        const [button] = elements.filter(element => element.constructor.name === 'HTMLButtonElement');
-        const enable = inputs.every(element => !!element.value);
-        button.disabled = !enable;
+        if(!!arsValue){
+          chlElement.value = ((arsValue / argentinaDollar) * chileDollar);
+          return;
+        }
       }
     </script>
+
   </body>
 </html>
