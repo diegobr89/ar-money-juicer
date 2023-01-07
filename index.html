@@ -149,6 +149,13 @@
 															<input type="number" class="form-control" id="arsValue" placeholder="">
 														</div>
 													</div>
+                          <div class="col-12">
+                            <label for="usdValue" class="form-label">Valor en dolares</label>
+                            <div class="input-group">
+                              <span class="input-group-text">$USD</span>
+                              <input type="number" class="form-control" id="usdValue" placeholder="" disabled="true">
+                            </div>
+                          </div>
 												</div>
 												<hr class="my-4"><button class="w-100 btn btn-primary btn-lg" type="button" onclick="onSubmitChlArs()">Calcular</button>
 											</form>
@@ -238,16 +245,19 @@
         const argentinaDollar = document.getElementById('argentinaDollar').value;
         const arsElement = document.getElementById('arsValue');
         const chlElement = document.getElementById('chlValue');
+        const usdElement = document.getElementById('usdValue');
         const arsValue = Number(arsElement.value);
         const chlValue = Number(chlElement.value);
-
+        const usdValue = Number(usdElement.value);
 
         if(!!chlValue){
+          usdElement.value = chlValue / chileDollar;
           arsElement.value = ((chlValue / chileDollar) * argentinaDollar);
           return;
         }
 
         if(!!arsValue){
+          usdElement.value = arsValue / argentinaDollar;
           chlElement.value = ((arsValue / argentinaDollar) * chileDollar);
           return;
         }
