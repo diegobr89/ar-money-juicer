@@ -251,14 +251,14 @@
         const usdValue = Number(usdElement.value);
 
         if(!!chlValue){
-          usdElement.value = chlValue / chileDollar;
-          arsElement.value = ((chlValue / chileDollar) * argentinaDollar);
+          usdElement.value = (chlValue / chileDollar).toFixed(2);
+          arsElement.value = ((chlValue / chileDollar) * argentinaDollar).toFixed(2);
           return;
         }
 
         if(!!arsValue){
-          usdElement.value = arsValue / argentinaDollar;
-          chlElement.value = ((arsValue / argentinaDollar) * chileDollar);
+          usdElement.value = (arsValue / argentinaDollar).toFixed(2);
+          chlElement.value = (((arsValue / argentinaDollar) * chileDollar)).toFixed(2);
           return;
         }
       }
