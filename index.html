@@ -1,18 +1,29 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
-    <link rel='manifest' href='/manifest.webmanifest'>
-    
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="manifest" href="/manifest.webmanifest" />
+
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>AR Money Juicer</title>
 
-    <link rel="icon" type="image/x-icon" href="/assets/favicon.png">
-    <link href="/css/bootstrap.min.css" rel="stylesheet">
-    <link href="/css/all.min.css" rel="stylesheet" />
-    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet" />
-    <link href="/css/mdb.min.css" rel="stylesheet" />
-    
+    <link rel="icon" type="image/x-icon" href="/assets/favicon.png" />
+
+    <link
+      href="/node_modules/bootstrap/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="/node_modules/@fortawesome/fontawesome-free/css/all.min.css"
+      rel="stylesheet"
+    />
+    <link href="/node_modules/mdb-ui-kit/css/mdb.min.css" rel="stylesheet" />
+
+    <link
+      href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
+      rel="stylesheet"
+    />
+
     <style>
       .btn-info-popover {
         padding: 0;
@@ -20,249 +31,493 @@
         font-size: 0.8rem;
       }
     </style>
-
   </head>
   <body class="bg-light">
     <div class="container">
-
       <main>
         <div class="py-5 text-center">
-          <img class="img-fluid" style="width:500px;" src="/assets/ar-money-juicer.png">
-          <p class="lead">Calculadora rapida de costo de oprtunidad en relacion a una compra en cuotas vs compra en contado efectivo</p>
+          <img
+            class="img-fluid"
+            style="width: 500px"
+            src="/assets/ar-money-juicer.png"
+          />
+          <p class="lead">
+            Calculadora rapida de costo de oprtunidad en relacion a una compra
+            en cuotas vs compra en contado efectivo
+          </p>
         </div>
 
-				<nav>
-					<div class="nav nav-tabs" id="nav-tab" role="tablist">
-						<button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home" aria-selected="true">Home</button>
-						<button class="nav-link" id="nav-chl-ars-tab" data-bs-toggle="tab" data-bs-target="#nav-chl-ars" type="button" role="tab" aria-controls="nav-chl-ars" aria-selected="false">CHL-ARS</button>
-					</div>
-				</nav>
-				<div class="tab-content" id="nav-tabContent">
-					<div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
-
-						<div class="row g-lg-5 g-2">
-							<div class="col-md-7 col-lg-8">
-								<h4 class="mb-3" style="padding-top: 1rem;">Datos necesarios</h4>
-								<ul class="list-group mb-3">
-									<li class="list-group-item">
-										<div style="padding-top: 1rem; padding-bottom: 1rem;">
-											<form id="calculateForm" onchange="toggleButton(this)" class="needs-validation">
-												<div class="row g-3">
-													<div class="col-sm-6"><label for="estimatedAnualInflation" class="form-label">Inflacion anual estimada</label>
-														<div class="input-group">
-															<span class="input-group-text">%</span>
-															<input type="number" class="form-control" id="estimatedAnualInflation" placeholder="" value="100" required="">
-															<div class="invalid-feedback"> Es un campo requerido </div>
-														</div>
-													</div>
-													<div class="col-sm-6"><label for="actualDollarPrice" class="form-label">Cotizacion del dolar</label>
-														<div class="input-group">
-															<span class="input-group-text">$ARS</span>
-															<input type="number" class="form-control" id="actualDollarPrice" placeholder="" value="330" required="">
-														</div>
-													</div>
-													<div class="col-12">
-														<label for="productPrice" class="form-label">Precio del producto en cuotas</label>
-														<div class="input-group">
-															<span class="input-group-text">$ARS</span>
-															<input type="number" class="form-control" id="productPrice" placeholder="" required="">
-														</div>
-													</div>
-													<div class="col-12"><label for="quotaQty" class="form-label">Cantidad de cuotas</label><input type="number" class="form-control" id="quotaQty" placeholder="" required=""></div>
-													<div class="col-12">
-														<label for="minimalPrice" class="form-label">Precio mas bajo pagando en efectivo</label>
-														<div class="input-group">
-															<span class="input-group-text">$ARS</span>
-															<input type="number" class="form-control" id="minimalPrice" placeholder="" required="">
-														</div>
-													</div>
-												</div>
-												<hr class="my-4"><button class="w-100 btn btn-primary btn-lg" type="button" disabled="true" onclick="onSubmit()">Calcular</button>
-											</form>
-										</div>
-									</li>
-								</ul>
-							</div>
-
-							<div class="col-md-5 col-lg-4 order-md-last">
-								<h4 class="d-flex justify-content-between align-items-center mb-3"><span class="text-primary">Resultados</span><span class="badge bg-primary rounded-pill">3</span></h4>
-								<ul class="list-group mb-3">
-									<li class="list-group-item d-flex justify-content-between lh-sm">
-										<div>
-											<h6 class="my-0"> Costo efectivo en pesos <button type="button" class="btn btn-link btn-sm btn-info-popover" data-bs-toggle="popover" data-bs-trigger="focus" data-bs-title="Costo efectivo en pesos" data-bs-content='Es el valor que deberia tener el "producto en cuotas" si se hiciera en un pago (Se calcula la proyeccion de monto inflacionario dentro del precio final y se lo resta)'><i class="fa-solid fa-circle-info"></i></button></h6><small class="text-muted">Costo real del producto en cuotas</small>
-										</div><span id="costInArs" class="text-muted">$0</span>
-									</li>
-									<li class="list-group-item d-flex justify-content-between lh-sm">
-										<div>
-											<h6 class="my-0"> Costo efectivo en dolares <button type="button" class="btn btn-link btn-sm btn-info-popover" data-bs-toggle="popover" data-bs-trigger="focus" data-bs-title="Costo efectivo en dolares" data-bs-content='Idem al costo efectivo en pesos, pero expresado en dolares utilizando la cotizacion ingresada en el formulario'><i class="fa-solid fa-circle-info"></i></button></h6><small class="text-muted">Costo real del producto en cuotas expresado en USD</small>
-										</div><span id="costInUsd" class="text-muted">US$0</span>
-									</li>
-									<li class="list-group-item d-flex justify-content-between lh-sm">
-										<div>
-											<h6 class="my-0"> Tasa efectiva en ctas <button type="button" class="btn btn-link btn-sm btn-info-popover" data-bs-toggle="popover" data-bs-trigger="focus" data-bs-title="Tasa efectiva en ctas" data-bs-content='Es la tasa de interés real (sin costo inflacionario) que se imprime en el monto final del "producto en cuotas". Si es un valor mayor a 0 indica que el producto tiene un interés extra además del inflacionario. Si el valor tiende a 0 indica que es "sin interes". Si el valor es negativo indica que la tasa de interes en cuotas es inferior a la inflacion'><i class="fa-solid fa-circle-info"></i></button></h6><small class="text-muted">Tasa de interes real en cuotas</small>
-										</div><span id="effectiveRate" class="text-muted">%0</span>
-									</li>
-									<li class="list-group-item d-flex justify-content-between bg-light">
-										<div class="text-success">
-											<h6 class="my-0">Metodo de pago sugerido</h6><strong id="methodSuggest">-</strong>
-										</div><span class="text-success"></span>
-									</li>
-								</ul>
-							</div>
-						</div>
-
-					</div>
-
-					<div class="tab-pane fade" id="nav-chl-ars" role="tabpanel" aria-labelledby="nav-chl-ars">
-
-						<div class="row">
-							<div class="col-xs-12">
-								<h4 class="mb-3" style="padding-top: 1rem;">Datos necesarios</h4>
-								<ul class="list-group mb-3">
-									<li class="list-group-item">
-										<div style="padding-top: 1rem; padding-bottom: 1rem;">
-											<form id="chlArsCalculateForm" class="needs-validation">
-												<div class="row g-3">
-													<div class="col-sm-12"><label for="chileDollar" class="form-label">Cotizacion del dolar en Chile</label>
-														<div class="input-group">
-															<span class="input-group-text">$CHL</span>
-															<input type="number" class="form-control" id="chileDollar" placeholder="" value="842" required="">
-														</div>
-													</div>
-													<div class="col-sm-12"><label for="argentinaDollar" class="form-label">Cotizacion del dolar en Argentina</label>
-														<div class="input-group">
-															<span class="input-group-text">$ARS</span>
-															<input type="number" class="form-control" id="argentinaDollar" placeholder="" value="330" required="">
-														</div>
-													</div>
-													<div class="col-12">
-														<label for="chlValue" class="form-label">Valor en pesos chilenos</label>
-														<div class="input-group">
-															<span class="input-group-text">$CHL</span>
-															<input type="number" class="form-control" id="chlValue" placeholder="">
-														</div>
-													</div>
-													<div class="col-12">
-														<label for="arsValue" class="form-label">Valor en pesos argentinos</label>
-														<div class="input-group">
-															<span class="input-group-text">$ARS</span>
-															<input type="number" class="form-control" id="arsValue" placeholder="">
-														</div>
-													</div>
-                          <div class="col-12">
-                            <label for="usdValue" class="form-label">Valor en dolares</label>
+        <nav>
+          <div class="nav nav-tabs" id="nav-tab" role="tablist">
+            <button
+              class="nav-link active"
+              id="nav-home-tab"
+              data-bs-toggle="tab"
+              data-bs-target="#nav-home"
+              type="button"
+              role="tab"
+              aria-controls="nav-home"
+              aria-selected="true"
+            >
+              Home
+            </button>
+            <button
+              class="nav-link"
+              id="nav-chl-ars-tab"
+              data-bs-toggle="tab"
+              data-bs-target="#nav-chl-ars"
+              type="button"
+              role="tab"
+              aria-controls="nav-chl-ars"
+              aria-selected="false"
+            >
+              CHL-ARS
+            </button>
+          </div>
+        </nav>
+        <div class="tab-content" id="nav-tabContent">
+          <div
+            class="tab-pane fade show active"
+            id="nav-home"
+            role="tabpanel"
+            aria-labelledby="nav-home-tab"
+          >
+            <div class="row g-lg-5 g-2">
+              <div class="col-md-7 col-lg-8">
+                <h4 class="mb-3" style="padding-top: 1rem">Datos necesarios</h4>
+                <ul class="list-group mb-3">
+                  <li class="list-group-item">
+                    <div style="padding-top: 1rem; padding-bottom: 1rem">
+                      <form
+                        id="calculateForm"
+                        onchange="toggleButton(this)"
+                        class="needs-validation"
+                      >
+                        <div class="row g-3">
+                          <div class="col-sm-6">
+                            <label
+                              for="estimatedAnualInflation"
+                              class="form-label"
+                              >Inflacion anual estimada</label
+                            >
                             <div class="input-group">
-                              <span class="input-group-text">$USD</span>
-                              <input type="number" class="form-control" id="usdValue" placeholder="" disabled="true">
+                              <span class="input-group-text">%</span>
+                              <input
+                                type="number"
+                                class="form-control"
+                                id="estimatedAnualInflation"
+                                placeholder="Cargando..."
+                                value=""
+                                required=""
+                              />
+                              <div class="invalid-feedback">
+                                Es un campo requerido
+                              </div>
                             </div>
                           </div>
-												</div>
-												<hr class="my-4"><button class="w-100 btn btn-primary btn-lg" type="button" onclick="onSubmitChlArs()">Calcular</button>
-											</form>
-										</div>
-									</li>
-								</ul>
-							</div>
-						</div>
+                          <div class="col-sm-6">
+                            <label for="actualDollarPrice" class="form-label"
+                              >Cotizacion del dolar</label
+                            >
+                            <div class="input-group">
+                              <span class="input-group-text">$ARS</span>
+                              <input
+                                type="number"
+                                class="form-control"
+                                id="actualDollarPrice"
+                                placeholder="Cargando..."
+                                value=""
+                                required=""
+                              />
+                            </div>
+                          </div>
+                          <div class="col-12">
+                            <label for="productPrice" class="form-label"
+                              >Precio del producto en cuotas</label
+                            >
+                            <div class="input-group">
+                              <span class="input-group-text">$ARS</span>
+                              <input
+                                type="number"
+                                class="form-control"
+                                id="productPrice"
+                                placeholder=""
+                                required=""
+                              />
+                            </div>
+                          </div>
+                          <div class="col-12">
+                            <label for="quotaQty" class="form-label"
+                              >Cantidad de cuotas</label
+                            ><input
+                              type="number"
+                              class="form-control"
+                              id="quotaQty"
+                              placeholder=""
+                              required=""
+                            />
+                          </div>
+                          <div class="col-12">
+                            <label for="minimalPrice" class="form-label"
+                              >Precio mas bajo pagando en efectivo</label
+                            >
+                            <div class="input-group">
+                              <span class="input-group-text">$ARS</span>
+                              <input
+                                type="number"
+                                class="form-control"
+                                id="minimalPrice"
+                                placeholder=""
+                                required=""
+                              />
+                            </div>
+                          </div>
+                        </div>
+                        <hr class="my-4" />
+                        <button
+                          class="w-100 btn btn-primary btn-lg"
+                          type="button"
+                          disabled="true"
+                          onclick="onSubmit()"
+                        >
+                          Calcular
+                        </button>
+                      </form>
+                    </div>
+                  </li>
+                </ul>
+              </div>
 
-					</div>
-				</div>
+              <div class="col-md-5 col-lg-4 order-md-last">
+                <h4
+                  class="d-flex justify-content-between align-items-center mb-3"
+                >
+                  <span class="text-primary">Resultados</span
+                  ><span class="badge bg-primary rounded-pill">3</span>
+                </h4>
+                <ul class="list-group mb-3">
+                  <li
+                    class="list-group-item d-flex justify-content-between lh-sm"
+                  >
+                    <div>
+                      <h6 class="my-0">
+                        Costo efectivo en pesos
+                        <button
+                          type="button"
+                          class="btn btn-link btn-sm btn-info-popover"
+                          data-bs-toggle="popover"
+                          data-bs-trigger="focus"
+                          data-bs-title="Costo efectivo en pesos"
+                          data-bs-content='Es el valor que deberia tener el "producto en cuotas" si se hiciera en un pago (Se calcula la proyeccion de monto inflacionario dentro del precio final y se lo resta)'
+                        >
+                          <i class="fa-solid fa-circle-info"></i>
+                        </button>
+                      </h6>
+                      <small class="text-muted"
+                        >Costo real del producto en cuotas</small
+                      >
+                    </div>
+                    <span id="costInArs" class="text-muted">$0</span>
+                  </li>
+                  <li
+                    class="list-group-item d-flex justify-content-between lh-sm"
+                  >
+                    <div>
+                      <h6 class="my-0">
+                        Costo efectivo en dolares
+                        <button
+                          type="button"
+                          class="btn btn-link btn-sm btn-info-popover"
+                          data-bs-toggle="popover"
+                          data-bs-trigger="focus"
+                          data-bs-title="Costo efectivo en dolares"
+                          data-bs-content="Idem al costo efectivo en pesos, pero expresado en dolares utilizando la cotizacion ingresada en el formulario"
+                        >
+                          <i class="fa-solid fa-circle-info"></i>
+                        </button>
+                      </h6>
+                      <small class="text-muted"
+                        >Costo real del producto en cuotas expresado en
+                        USD</small
+                      >
+                    </div>
+                    <span id="costInUsd" class="text-muted">US$0</span>
+                  </li>
+                  <li
+                    class="list-group-item d-flex justify-content-between lh-sm"
+                  >
+                    <div>
+                      <h6 class="my-0">
+                        Tasa efectiva en ctas
+                        <button
+                          type="button"
+                          class="btn btn-link btn-sm btn-info-popover"
+                          data-bs-toggle="popover"
+                          data-bs-trigger="focus"
+                          data-bs-title="Tasa efectiva en ctas"
+                          data-bs-content='Es la tasa de interés real (sin costo inflacionario) que se imprime en el monto final del "producto en cuotas". Si es un valor mayor a 0 indica que el producto tiene un interés extra además del inflacionario. Si el valor tiende a 0 indica que es "sin interes". Si el valor es negativo indica que la tasa de interes en cuotas es inferior a la inflacion'
+                        >
+                          <i class="fa-solid fa-circle-info"></i>
+                        </button>
+                      </h6>
+                      <small class="text-muted"
+                        >Tasa de interes real en cuotas</small
+                      >
+                    </div>
+                    <span id="effectiveRate" class="text-muted">%0</span>
+                  </li>
+                  <li
+                    class="list-group-item d-flex justify-content-between bg-light"
+                  >
+                    <div class="text-success">
+                      <h6 class="my-0">Metodo de pago sugerido</h6>
+                      <strong id="methodSuggest">-</strong>
+                    </div>
+                    <span class="text-success"></span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
 
+          <div
+            class="tab-pane fade"
+            id="nav-chl-ars"
+            role="tabpanel"
+            aria-labelledby="nav-chl-ars"
+          >
+            <div class="row">
+              <div class="col-xs-12">
+                <h4 class="mb-3" style="padding-top: 1rem">Datos necesarios</h4>
+                <ul class="list-group mb-3">
+                  <li class="list-group-item">
+                    <div style="padding-top: 1rem; padding-bottom: 1rem">
+                      <form id="chlArsCalculateForm" class="needs-validation">
+                        <div class="row g-3">
+                          <div class="col-sm-12">
+                            <label for="chileDollar" class="form-label"
+                              >Cotizacion del dolar en Chile</label
+                            >
+                            <div class="input-group">
+                              <span class="input-group-text">$CHL</span>
+                              <input
+                                type="number"
+                                class="form-control"
+                                id="chileDollar"
+                                placeholder=""
+                                value="842"
+                                required=""
+                              />
+                            </div>
+                          </div>
+                          <div class="col-sm-12">
+                            <label for="argentinaDollar" class="form-label"
+                              >Cotizacion del dolar en Argentina</label
+                            >
+                            <div class="input-group">
+                              <span class="input-group-text">$ARS</span>
+                              <input
+                                type="number"
+                                class="form-control"
+                                id="argentinaDollar"
+                                placeholder=""
+                                value="330"
+                                required=""
+                              />
+                            </div>
+                          </div>
+                          <div class="col-12">
+                            <label for="chlValue" class="form-label"
+                              >Valor en pesos chilenos</label
+                            >
+                            <div class="input-group">
+                              <span class="input-group-text">$CHL</span>
+                              <input
+                                type="number"
+                                class="form-control"
+                                id="chlValue"
+                                placeholder=""
+                              />
+                            </div>
+                          </div>
+                          <div class="col-12">
+                            <label for="arsValue" class="form-label"
+                              >Valor en pesos argentinos</label
+                            >
+                            <div class="input-group">
+                              <span class="input-group-text">$ARS</span>
+                              <input
+                                type="number"
+                                class="form-control"
+                                id="arsValue"
+                                placeholder=""
+                              />
+                            </div>
+                          </div>
+                          <div class="col-12">
+                            <label for="usdValue" class="form-label"
+                              >Valor en dolares</label
+                            >
+                            <div class="input-group">
+                              <span class="input-group-text">$USD</span>
+                              <input
+                                type="number"
+                                class="form-control"
+                                id="usdValue"
+                                placeholder=""
+                                disabled="true"
+                              />
+                            </div>
+                          </div>
+                        </div>
+                        <hr class="my-4" />
+                        <button
+                          class="w-100 btn btn-primary btn-lg"
+                          type="button"
+                          onclick="onSubmitChlArs()"
+                        >
+                          Calcular
+                        </button>
+                      </form>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
       </main>
 
       <footer class="my-5 pt-5 text-muted text-center text-small">
         <p class="mb-1">2022 - Argentina</p>
       </footer>
     </div>
-    
-    <script src="/js/bootstrap.bundle.min.js"></script>
+
+    <script src="/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="node_modules/htmlparser/lib/htmlparser.min.js"></script>
     <script src="/js/price-calc-core.js"></script>
+    <script src="/js/actual-dollar-value.js"></script>
+		<script src="/js/ipc-value.js"></script>
 
     <script>
-      if ('serviceWorker' in navigator) {
-        window.addEventListener('load', function() {
-          navigator.serviceWorker.register('/sw-v2.js').then(function(registration) {
-            console.log('Service Worker registrado: ', registration.scope);
-          }, function(err) {
-            console.log('Service Worker no se pudo registrar: ', err);
-          });
+      if ("serviceWorker" in navigator) {
+        window.addEventListener("load", function () {
+          navigator.serviceWorker.register("/sw-v2.js").then(
+            function (registration) {
+              console.log("Service Worker registrado: ", registration.scope);
+            },
+            function (err) {
+              console.log("Service Worker no se pudo registrar: ", err);
+            }
+          );
         });
       }
     </script>
-    
+
     <script>
-      const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]')
-      const popoverList = [...popoverTriggerList].map(popoverTriggerEl => new bootstrap.Popover(popoverTriggerEl))
+      const popoverTriggerList = document.querySelectorAll(
+        '[data-bs-toggle="popover"]'
+      );
+      const popoverList = [...popoverTriggerList].map(
+        (popoverTriggerEl) => new bootstrap.Popover(popoverTriggerEl)
+      );
     </script>
 
     <script>
       function onSubmit() {
-        const form = document.getElementById('calculateForm');
+        const form = document.getElementById("calculateForm");
         if (!form.checkValidity()) return;
         calculate();
       }
 
       function calculate() {
         const realPrice = new RealPrice();
-        realPrice.estimatedAnualInflation = document.getElementById('estimatedAnualInflation').value; //Inflacion anual estimada
-        realPrice.actualDollarPrice = document.getElementById('actualDollarPrice').value; //Precio del dolar blue al dia de la fecha
-        realPrice.productPrice = document.getElementById('productPrice').value; //Precio final del producto en cuotas
-        realPrice.quotaQty = document.getElementById('quotaQty').value; //Cantidad de cuotas
-        realPrice.minimalPrice = document.getElementById('minimalPrice').value; // Precio que se puede conseguir el producto en contado efectivo
-        
-        const {
-          costInArs,
-          costInUsd,
-          effectiveRate
-        } = realPrice.calculate(true); // si se pasa false se estima que el precio del dolar no se mueve
-        
-        const methodSuggest = realPrice.minimalPrice > costInArs ? 'Cuotas' : 'Efectivo';
-        
-        document.getElementById('costInArs').innerHTML = "$" + costInArs.toFixed(2);
-        document.getElementById('costInUsd').innerHTML = "US$" + costInUsd.toFixed(2);
-        document.getElementById('effectiveRate').innerHTML = "%" + effectiveRate.toFixed(2);
-        document.getElementById('methodSuggest').innerHTML = methodSuggest;
+        realPrice.estimatedAnualInflation = document.getElementById(
+          "estimatedAnualInflation"
+        ).value; //Inflacion anual estimada
+        realPrice.actualDollarPrice =
+          document.getElementById("actualDollarPrice").value; //Precio del dolar blue al dia de la fecha
+        realPrice.productPrice = document.getElementById("productPrice").value; //Precio final del producto en cuotas
+        realPrice.quotaQty = document.getElementById("quotaQty").value; //Cantidad de cuotas
+        realPrice.minimalPrice = document.getElementById("minimalPrice").value; // Precio que se puede conseguir el producto en contado efectivo
+
+        const { costInArs, costInUsd, effectiveRate } =
+          realPrice.calculate(true); // si se pasa false se estima que el precio del dolar no se mueve
+
+        const methodSuggest =
+          realPrice.minimalPrice > costInArs ? "Cuotas" : "Efectivo";
+
+        document.getElementById("costInArs").innerHTML =
+          "$" + costInArs.toFixed(2);
+        document.getElementById("costInUsd").innerHTML =
+          "US$" + costInUsd.toFixed(2);
+        document.getElementById("effectiveRate").innerHTML =
+          "%" + effectiveRate.toFixed(2);
+        document.getElementById("methodSuggest").innerHTML = methodSuggest;
       }
 
       function toggleButton(e) {
         const elements = Array.from(e.elements);
-        const inputs = elements.filter(element => element.constructor.name !== 'HTMLButtonElement');
-        const [button] = elements.filter(element => element.constructor.name === 'HTMLButtonElement');
-        const enable = inputs.every(element => !!element.value);
+        const inputs = elements.filter(
+          (element) => element.constructor.name !== "HTMLButtonElement"
+        );
+        const [button] = elements.filter(
+          (element) => element.constructor.name === "HTMLButtonElement"
+        );
+        const enable = inputs.every((element) => !!element.value);
         button.disabled = !enable;
       }
     </script>
 
     <script>
       function onSubmitChlArs() {
-        const form = document.getElementById('chlArsCalculateForm');
+        const form = document.getElementById("chlArsCalculateForm");
         calculateChlArs();
       }
 
       function calculateChlArs() {
-
-        const chileDollar = document.getElementById('chileDollar').value;
-        const argentinaDollar = document.getElementById('argentinaDollar').value;
-        const arsElement = document.getElementById('arsValue');
-        const chlElement = document.getElementById('chlValue');
-        const usdElement = document.getElementById('usdValue');
+        const chileDollar = document.getElementById("chileDollar").value;
+        const argentinaDollar =
+          document.getElementById("argentinaDollar").value;
+        const arsElement = document.getElementById("arsValue");
+        const chlElement = document.getElementById("chlValue");
+        const usdElement = document.getElementById("usdValue");
         const arsValue = Number(arsElement.value);
         const chlValue = Number(chlElement.value);
         const usdValue = Number(usdElement.value);
 
-        if(!!chlValue){
+        if (!!chlValue) {
           usdElement.value = (chlValue / chileDollar).toFixed(2);
-          arsElement.value = ((chlValue / chileDollar) * argentinaDollar).toFixed(2);
+          arsElement.value = (
+            (chlValue / chileDollar) *
+            argentinaDollar
+          ).toFixed(2);
           return;
         }
 
-        if(!!arsValue){
+        if (!!arsValue) {
           usdElement.value = (arsValue / argentinaDollar).toFixed(2);
-          chlElement.value = (((arsValue / argentinaDollar) * chileDollar)).toFixed(2);
+          chlElement.value = (
+            (arsValue / argentinaDollar) *
+            chileDollar
+          ).toFixed(2);
           return;
         }
       }
     </script>
 
+		<script>
+			const actuallDollarValue = new ActualDollarValue();
+			actuallDollarValue.getCurrentValue().then((currentValue) => {
+				document.getElementById('actualDollarPrice').value = currentValue;
+			});
+		</script>
+
+<script>
+	const ipcVaue = new IPCValue();
+	ipcVaue.getCurrentValue().then((currentValue) => {
+		document.getElementById('estimatedAnualInflation').value = currentValue;
+	});
+</script>
   </body>
 </html>
