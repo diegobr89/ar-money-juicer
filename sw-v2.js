@@ -13,6 +13,7 @@ self.addEventListener('install', function(event) {
         '/js/fetch-html.js',
 				'/js/fetch-dollar-value.js',
 				'/js/fetch-ipc.js',
+				'https://silicon.createx.studio/assets/css/theme.min.css'
       ]);
     })
   );
