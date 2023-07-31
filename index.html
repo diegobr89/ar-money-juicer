@@ -159,6 +159,7 @@
                                 id="productPrice"
                                 placeholder=""
                                 required=""
+                                oninput="makeReadableNumber"
                               />
                             </div>
                           </div>
@@ -184,7 +185,7 @@
                                 class="form-control"
                                 id="minimalPrice"
                                 placeholder=""
-                                required=""
+                                oninput="makeReadableNumber"
                               />
                             </div>
                           </div>
@@ -439,7 +440,11 @@
     <script>
       function onSubmit() {
         const form = document.getElementById("calculateForm");
-        // if (!form.checkValidity()) return;
+        const minimalValueDomNode = document.getElementById("minimalPrice");
+
+        if(!minimalValueDomNode.value)
+          minimalValueDomNode.value = document.getElementById("productPrice").value;
+        
         calculate();
       }
 
@@ -518,9 +523,7 @@
         }
       }
     </script>
-    <!--
-    <script type="module" src="/js/fetch-dollar-value.js"></script>
-    <script type="module" src="/js/estimated-inflation-calculator.js"></script> -->
+
     <script type="module">
       import { FetchDollarValue } from "/js/fetch-dollar-value.js";
       import { EstimatedInflationCalculator } from "/js/estimated-inflation-calculator.js";
@@ -542,6 +545,13 @@
           }
         );
       };
+    </script>
+
+    <script>
+      function makeReadableNumber(e) {
+        const num = e.srcElement.value || '';
+        Number.parseFloat(num.replace(',','.')).toLocaleString('es-ES');
+      }
     </script>
   </body>
 </html>
