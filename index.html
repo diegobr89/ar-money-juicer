@@ -549,9 +549,18 @@
 
     <script>
       function makeReadableNumber(domNode) {
-        const num = domNode.value || '';
-        const formatted = Number.parseFloat(num.replace(',','.')).toLocaleString('es-ES');
-        domNode.value = formatted;
+        /*
+          let num = domNode.value || '';
+          if(domNode.getAttribute('formatted') === 'true')
+            num = num.replace('.', '');
+        
+          const replaced = num.replace(',','.');
+          const formatted = parseFloat(replaced).toLocaleString('es-ES');
+          if(formatted !== num){
+            domNode.value = formatted;
+            domNode.setAttribute('formatted', 'true');
+          }
+        */
       }
     </script>
   </body>
