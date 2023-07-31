@@ -550,7 +550,8 @@
     <script>
       function makeReadableNumber(e) {
         const num = e.srcElement.value || '';
-        Number.parseFloat(num.replace(',','.')).toLocaleString('es-ES');
+        const formatted = Number.parseFloat(num.replace(',','.')).toLocaleString('es-ES');
+        e.srcElement.value = formatted;
       }
     </script>
   </body>
