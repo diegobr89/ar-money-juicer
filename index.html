@@ -482,7 +482,7 @@
         const [button] = elements.filter(
           (element) => element.constructor.name === "HTMLButtonElement"
         );
-        const enable = inputs.every((element) => !!element.value);
+        const enable = inputs.every((element) => element.getAttribute('required') === null || !!element.value);
         button.disabled = !enable;
       }
     </script>
