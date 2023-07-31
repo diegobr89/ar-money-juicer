@@ -548,9 +548,10 @@
     </script>
 
     <script>
-      function makeReadableNumber({ value: num = '' }) {
+      function makeReadableNumber(domNode) {
+        const num = domNode.value || '';
         const formatted = Number.parseFloat(num.replace(',','.')).toLocaleString('es-ES');
-        e.srcElement.value = formatted;
+        domNode.value = formatted;
       }
     </script>
   </body>
