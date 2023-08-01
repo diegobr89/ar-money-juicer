@@ -105,6 +105,7 @@
                                 placeholder="Cargando..."
                                 value=""
                                 required=""
+                                oninput="makeReadableNumber(this)"
                               />
                               <div class="invalid-feedback">
                                 Es un campo requerido
@@ -124,6 +125,7 @@
                                 placeholder="Cargando..."
                                 value=""
                                 required=""
+                                oninput="makeReadableNumber(this)"
                               />
                               <span
                                 class="input-group-text"
@@ -448,16 +450,18 @@
         calculate();
       }
 
+      function getInputValue(inputId){
+        return Number.parseFloat(document.getElementById(inputId).getAttribute('numeric-value'));
+      }
+
       function calculate() {
         const realPrice = new RealPrice();
-        realPrice.estimatedAnualInflation = document.getElementById(
-          "estimatedAnualInflation"
-        ).value; //Inflacion anual estimada
-        realPrice.actualDollarPrice =
-          document.getElementById("actualDollarPrice").value; //Precio del dolar blue al dia de la fecha
-        realPrice.productPrice = document.getElementById("productPrice").value; //Precio final del producto en cuotas
+
+        realPrice.estimatedAnualInflation = getInputValue("estimatedAnualInflation"); //Inflacion anual estimada
+        realPrice.actualDollarPrice = getInputValue("actualDollarPrice"); //Precio del dolar blue al dia de la fecha
+        realPrice.productPrice = getInputValue("productPrice");//Precio final del producto en cuotas
         realPrice.quotaQty = document.getElementById("quotaQty").value; //Cantidad de cuotas
-        realPrice.minimalPrice = document.getElementById("minimalPrice").value; // Precio que se puede conseguir el producto en contado efectivo
+        realPrice.minimalPrice = getInputValue("minimalPrice"); // Precio que se puede conseguir el producto en contado efectivo
 
         const { costInArs, costInUsd, effectiveRate } =
           realPrice.calculate(true); // si se pasa false se estima que el precio del dolar no se mueve
@@ -548,20 +552,32 @@
     </script>
 
     <script>
-      function makeReadableNumber(domNode) {
-        /*
-          let num = domNode.value || '';
-          if(domNode.getAttribute('formatted') === 'true')
-            num = num.replace('.', '');
-        
-          const replaced = num.replace(',','.');
-          const formatted = parseFloat(replaced).toLocaleString('es-ES');
-          if(formatted !== num){
-            domNode.value = formatted;
-            domNode.setAttribute('formatted', 'true');
-          }
-        */
-      }
+      function makeReadableNumber(input) {
+            // Obtener el valor del input
+            let value = input.value;
+
+            // Eliminar todos los puntos existentes para poder formatear adecuadamente
+            value = value.replace(/\./g, '');
+
+            // Obtener la parte decimal (si existe)
+            const partes = value.split(',');
+            let parteDecimal = '';
+            if (partes.length > 1) {
+                parteDecimal = ',' + partes.pop();
+            }
+
+            // Formatear la parte entera con un punto cada tres dígitos
+            const parteEntera = partes.join('').replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+
+            // Combinar la parte entera y la decimal (si existe)
+            const numeroFormateado = parteEntera + parteDecimal;
+
+            // Asignar el valor formateado al input
+            input.value = numeroFormateado;
+						
+						const valorNumerico = numeroFormateado.replace(/\./g, '').replace(',', '.');
+						input.setAttribute('numeric-value', valorNumerico);
+        }
     </script>
   </body>
 </html>
