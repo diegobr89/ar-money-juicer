@@ -105,7 +105,6 @@
                                 placeholder="Cargando..."
                                 value=""
                                 required=""
-                                oninput="makeReadableNumber(this)"
                               />
                               <div class="invalid-feedback">
                                 Es un campo requerido
@@ -125,7 +124,6 @@
                                 placeholder="Cargando..."
                                 value=""
                                 required=""
-                                oninput="makeReadableNumber(this)"
                               />
                               <span
                                 class="input-group-text"
@@ -161,7 +159,6 @@
                                 id="productPrice"
                                 placeholder=""
                                 required=""
-                                oninput="makeReadableNumber(this)"
                               />
                             </div>
                           </div>
@@ -182,12 +179,10 @@
                             >
                             <div class="input-group">
                               <span class="input-group-text">$ARS</span>
-                              <input
-                                type="number"
+                              <input-currency
                                 class="form-control"
                                 id="minimalPrice"
                                 placeholder=""
-                                oninput="makeReadableNumber(this)"
                               />
                             </div>
                           </div>
@@ -414,6 +409,7 @@
 
     <script src="/js/bootstrap.bundle.min.js"></script>
     <script src="/js/price-calc-core.js"></script>
+    <script src="/js/input-currency.js"></script>
 
     <script>
       if ("serviceWorker" in navigator) {
@@ -451,7 +447,7 @@
       }
 
       function getInputValue(inputId){
-        return Number.parseFloat(document.getElementById(inputId).getAttribute('numeric-value'));
+        return Number.parseFloat(document.getElementById(inputId).value);
       }
 
       function calculate() {
@@ -461,7 +457,7 @@
         realPrice.actualDollarPrice = getInputValue("actualDollarPrice"); //Precio del dolar blue al dia de la fecha
         realPrice.productPrice = getInputValue("productPrice");//Precio final del producto en cuotas
         realPrice.quotaQty = document.getElementById("quotaQty").value; //Cantidad de cuotas
-        realPrice.minimalPrice = getInputValue("minimalPrice"); // Precio que se puede conseguir el producto en contado efectivo
+        realPrice.minimalPrice = document.getElementById("minimalPrice").valueAsNumber; // Precio que se puede conseguir el producto en contado efectivo
 
         const { costInArs, costInUsd, effectiveRate } =
           realPrice.calculate(true); // si se pasa false se estima que el precio del dolar no se mueve
