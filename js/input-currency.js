@@ -1,16 +1,14 @@
 class InputCurrency extends HTMLInputElement {
 
-    set value(value) {
-        this.value = this.formatNumberAsString(value);
-    }
-
-    get valueAsNumber() {
-        return Number.parseFloat(this.value.replace(/\./g, '').replace(',', '.'));
-    }
-
     constructor() {
         super();
-        this.type = "number";
+        
+        type = "number";
+
+        this.addEventListener('change', () => {
+            this.value = this.formatNumberAsString(this.value)
+            this.valueAsNumber = Number.parseFloat(this.value.replace(/\./g, '').replace(',', '.'));
+        }) 
     }
 
 

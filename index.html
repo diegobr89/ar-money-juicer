@@ -546,34 +546,5 @@
         );
       };
     </script>
-
-    <script>
-      function makeReadableNumber(input) {
-            // Obtener el valor del input
-            let value = input.value;
-
-            // Eliminar todos los puntos existentes para poder formatear adecuadamente
-            value = value.replace(/\./g, '');
-
-            // Obtener la parte decimal (si existe)
-            const partes = value.split(',');
-            let parteDecimal = '';
-            if (partes.length > 1) {
-                parteDecimal = ',' + partes.pop();
-            }
-
-            // Formatear la parte entera con un punto cada tres dígitos
-            const parteEntera = partes.join('').replace(/\B(?=(\d{3})+(?!\d))/g, '.');
-
-            // Combinar la parte entera y la decimal (si existe)
-            const numeroFormateado = parteEntera + parteDecimal;
-
-            // Asignar el valor formateado al input
-            input.value = numeroFormateado;
-						
-						const valorNumerico = numeroFormateado.replace(/\./g, '').replace(',', '.');
-						input.setAttribute('numeric-value', valorNumerico);
-        }
-    </script>
   </body>
 </html>
