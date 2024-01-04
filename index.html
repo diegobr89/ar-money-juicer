@@ -180,7 +180,6 @@
                             <div class="input-group">
                               <span class="input-group-text">$ARS</span>
                               <input
-                                is="input-currency"
                                 class="form-control"
                                 id="minimalPrice"
                                 placeholder=""
@@ -410,7 +409,7 @@
 
     <script src="/js/bootstrap.bundle.min.js"></script>
     <script src="/js/price-calc-core.js"></script>
-    <script src="/js/input-currency.js"></script>
+    <!-- <script src="/js/input-currency.js"></script> -->
 
     <script>
       if ("serviceWorker" in navigator) {
@@ -443,7 +442,7 @@
 
         if(!minimalValueDomNode.value)
           minimalValueDomNode.value = document.getElementById("productPrice").value;
-        
+
         calculate();
       }
 
