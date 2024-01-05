@@ -457,7 +457,7 @@
         realPrice.actualDollarPrice = getInputValue("actualDollarPrice"); //Precio del dolar blue al dia de la fecha
         realPrice.productPrice = getInputValue("productPrice");//Precio final del producto en cuotas
         realPrice.quotaQty = document.getElementById("quotaQty").value; //Cantidad de cuotas
-        realPrice.minimalPrice = document.getInputValue("minimalPrice"); // Precio que se puede conseguir el producto en contado efectivo
+        realPrice.minimalPrice = getInputValue("minimalPrice"); // Precio que se puede conseguir el producto en contado efectivo
 
         const { costInArs, costInUsd, effectiveRate } =
           realPrice.calculate(true); // si se pasa false se estima que el precio del dolar no se mueve
